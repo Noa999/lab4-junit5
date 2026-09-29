@@ -14,7 +14,7 @@ OpenJDK 64-Bit Server VM (build 17.0.20.1+1-1-26.04-Ubuntu, mixed mode, sharing)
 
 `mvn -version`:
 ~~~
-[1mApache Maven 3.9.12[m
+Apache Maven 3.9.12
 Maven home: /usr/share/maven
 Java version: 17.0.20.1, vendor: Ubuntu, runtime: /usr/lib/jvm/java-17-openjdk-amd64
 Default locale: en, platform encoding: UTF-8
