@@ -3,6 +3,7 @@ package mn.edu.must.sqat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -10,70 +11,102 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 class GradeCalculatorTest {
 
-    private final GradeCalculator calc = new GradeCalculator();
-
     // ---------- letterGrade ----------
 
     @Test
+    @DisplayName("90 оноо яг A дүн байх ёстой (хязгаарын тохиолдол)")
     void ninetyIsExactlyA() {
-        assertEquals("A", calc.letterGrade(90));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        String grade = calc.letterGrade(90.0);          // Act
+        assertEquals("A", grade);                       // Assert
     }
 
     @Test
+    @DisplayName("100 оноо A дүн байх ёстой (дээд хязгаар)")
     void hundredIsA() {
-        assertEquals("A", calc.letterGrade(100));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        String grade = calc.letterGrade(100.0);         // Act
+        assertEquals("A", grade);                       // Assert
     }
 
     @Test
+    @DisplayName("0 оноо F дүн байх ёстой (доод хязгаар)")
     void zeroIsF() {
-        assertEquals("F", calc.letterGrade(0));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        String grade = calc.letterGrade(0.0);           // Act
+        assertEquals("F", grade);                       // Assert
     }
 
     @Test
+    @DisplayName("89.99 оноо B дүн байх ёстой (90-ээс арай доор)")
     void justBelowNinetyIsB() {
-        assertEquals("B", calc.letterGrade(89.99));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        String grade = calc.letterGrade(89.99);         // Act
+        assertEquals("B", grade);                       // Assert
     }
 
     @Test
+    @DisplayName("Сөрөг оноо IllegalArgumentException шидэх ёстой")
     void negativeScoreThrows() {
-        assertThrows(IllegalArgumentException.class, () -> calc.letterGrade(-0.1));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        assertThrows(IllegalArgumentException.class,    // Act + Assert
+                () -> calc.letterGrade(-0.1));
     }
 
     @Test
+    @DisplayName("100-аас их оноо IllegalArgumentException шидэх ёстой")
     void overHundredThrows() {
-        assertThrows(IllegalArgumentException.class, () -> calc.letterGrade(100.1));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        assertThrows(IllegalArgumentException.class,    // Act + Assert
+                () -> calc.letterGrade(100.1));
     }
 
     @Test
+    @DisplayName("NaN оноо IllegalArgumentException шидэх ёстой")
     void nanScoreThrows() {
-        assertThrows(IllegalArgumentException.class, () -> calc.letterGrade(Double.NaN));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        assertThrows(IllegalArgumentException.class,    // Act + Assert
+                () -> calc.letterGrade(Double.NaN));
     }
 
     // ---------- totalScore ----------
 
     @Test
+    @DisplayName("Бүх хэсгийн оноо зөв нэмэгдэх ёстой (8+35+7+9+25=84)")
     void totalScoreSumsAllParts() {
-        assertEquals(84.0, calc.totalScore(8, 35, 7, 9, 25), 0.0001);
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        double total = calc.totalScore(8, 35, 7, 9, 25); // Act
+        assertEquals(84.0, total, 0.0001);              // Assert
     }
 
     @Test
+    @DisplayName("Бүх оноо 0 бол нийлбэр 0 байх ёстой")
     void totalScoreAllZeroIsZero() {
-        assertEquals(0.0, calc.totalScore(0, 0, 0, 0, 0), 0.0001);
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        double total = calc.totalScore(0, 0, 0, 0, 0);  // Act
+        assertEquals(0.0, total, 0.0001);               // Assert
     }
 
     @Test
+    @DisplayName("Ирц 10-аас хэтэрвэл exception шидэх ёстой")
     void totalScoreRejectsAttendanceOver10() {
-        assertThrows(IllegalArgumentException.class, () -> calc.totalScore(10.5, 30, 5, 5, 20));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        assertThrows(IllegalArgumentException.class,    // Act + Assert
+                () -> calc.totalScore(10.5, 30, 5, 5, 20));
     }
 
     @Test
+    @DisplayName("Шалгалт 30-аас хэтэрвэл exception шидэх ёстой")
     void totalScoreRejectsExamOver30() {
-        assertThrows(IllegalArgumentException.class, () -> calc.totalScore(5, 30, 5, 5, 31));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        assertThrows(IllegalArgumentException.class,    // Act + Assert
+                () -> calc.totalScore(5, 30, 5, 5, 31));
     }
 
     // ---------- Parameterized ----------
 
     @ParameterizedTest
+    @DisplayName("letterGrade хязгаарын утгууд: {0} -> {1}")
     @CsvSource({
         "100,   A",
         "90,    A",
@@ -87,27 +120,37 @@ class GradeCalculatorTest {
         "0,     F"
     })
     void letterGradeBoundaries(double score, String expected) {
-        assertEquals(expected, calc.letterGrade(score));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        String grade = calc.letterGrade(score);         // Act
+        assertEquals(expected, grade);                  // Assert
     }
 
     @ParameterizedTest
+    @DisplayName("Буруу оноо {0} exception шидэх ёстой")
     @ValueSource(doubles = {-1, -0.01, 100.01, 1000})
     void invalidScoresThrow(double score) {
-        assertThrows(IllegalArgumentException.class, () -> calc.letterGrade(score));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        assertThrows(IllegalArgumentException.class,    // Act + Assert
+                () -> calc.letterGrade(score));
     }
 
     @ParameterizedTest
+    @DisplayName("totalScore зөв нийлбэр: {0}+{1}+{2}+{3}+{4} = {5}")
     @CsvSource({
         "10, 40, 10, 10, 30, 100",
         "0,  0,  0,  0,  0,  0",
         "5,  20, 5,  5,  15, 50",
         "8,  35, 7,  9,  25, 84"
     })
-    void totalScoreValidCombinations(double att, double lab, double q1, double q2, double exam, double expected) {
-        assertEquals(expected, calc.totalScore(att, lab, q1, q2, exam), 0.0001);
+    void totalScoreValidCombinations(double att, double lab, double q1, double q2,
+                                     double exam, double expected) {
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        double total = calc.totalScore(att, lab, q1, q2, exam); // Act
+        assertEquals(expected, total, 0.0001);          // Assert
     }
 
     @ParameterizedTest
+    @DisplayName("totalScore буруу оролт exception шидэх ёстой")
     @CsvSource({
         "-1,   0,    0,    0,    0",
         "0,    -1,   0,    0,    0",
@@ -121,6 +164,8 @@ class GradeCalculatorTest {
         "0,    0,    0,    0,    30.1"
     })
     void totalScoreRejectsOutOfRange(double att, double lab, double q1, double q2, double exam) {
-        assertThrows(IllegalArgumentException.class, () -> calc.totalScore(att, lab, q1, q2, exam));
+        GradeCalculator calc = new GradeCalculator();   // Arrange
+        assertThrows(IllegalArgumentException.class,    // Act + Assert
+                () -> calc.totalScore(att, lab, q1, q2, exam));
     }
 }
